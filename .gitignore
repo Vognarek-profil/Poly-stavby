@@ -1,3 +1,17 @@
 .DS_Store
 Thumbs.db
 *.log
+
+# Claude Code (lokální nastavení, interní instrukce)
+.claude/
+
+# Interní podklady a poznámky (nepublikovat přes Vercel URL)
+O mně.txt
+Prompt.txt
+Brief.txt
+Zadání.txt
+TODO.txt
+Základní info.txt
+
+# Originální zdrojové fotky (web servíruje jen fotky-web/ WebP)
+Fotky/

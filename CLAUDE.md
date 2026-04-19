@@ -6,6 +6,16 @@
 
 Web živnostníka **Petra Poláčka (Poly stavby)** – zateplení fasád, fasádní omítky, sádrokartonářské práce a vnitřní omítky (štuk) na Jižní Moravě.
 
+## Firemní údaje
+
+- **Jméno:** Petr Poláček (OSVČ)
+- **IČO:** 87808641
+- **OSVČ od:** 27. 4. 2011 (→ 15 let zkušeností v r. 2026)
+- **Sídlo:** Moutnice 122, 664 55 Moutnice, okres Brno-venkov, Jihomoravský kraj
+- **GPS:** 49.0403 N, 16.7283 E
+- **Oblast působnosti:** Moutnice + okruh 50 km (Brno, Brno-venkov, Vyškov, Hodonín, Břeclav, Blansko)
+- **NACE:** 43120 (elektroinstalace), 433 (dokončovací stavební práce)
+
 ## Stav projektu
 
 - **Web:** https://poly-stavby.vercel.app ✅ live
@@ -47,7 +57,8 @@ Poly stavby/
 | `#o-mne` | Profil Petra Poláčka + odkaz na NejŘemeslníci.cz |
 | `#pred-po` | 2 páry před/po (rodinný dům + bytový dům) |
 | `#galerie` | 6 fotek realizací |
-| `#recenze` | 4 vymyšlené recenze (nahradit reálnými!) |
+| `#kde-pracujeme` | Oblast působnosti – seznam měst + okresy (local SEO) |
+| `#recenze` | 4 reálné ověřené recenze z NejŘemeslníci.cz (5,0★), odkaz na zdroj |
 | `#kontakt` | Telefon, e-mail, Instagram, Messenger |
 
 ## Design
@@ -70,14 +81,18 @@ Poly stavby/
 - [x] Canonical URL
 - [x] Open Graph (Facebook, LinkedIn)
 - [x] Twitter Card
-- [x] JSON-LD schema (HomeAndConstructionBusiness)
+- [x] JSON-LD schema (HomeAndConstructionBusiness) – plná `PostalAddress`, `GeoCoordinates`, IČO, `foundingDate`, `serviceArea` 50 km, 22 `areaServed`, `hasOfferCatalog`
+- [x] Geo meta tagy (`geo.region`, `geo.position`, `ICBM`)
 - [x] robots.txt + sitemap.xml
 - [x] Favicon
 - [x] Preload hero image
 - [x] WebP obrázky s SEO názvy a alt tagy
 - [x] loading="lazy" + width/height na obrázcích
+- [x] Sekce "Kde pracujeme" se seznamem měst (local SEO + user intent)
+- [x] Adresa + IČO v kontaktu i patičce
+- [x] Reálné ověřené recenze z NejŘemeslníci.cz + `AggregateRating` + `Review` entity ve schema (5,0★, 4 recenze)
 - [ ] Google Search Console – po připojení domény
-- [ ] Reálné recenze místo vymyšlených
+- [ ] Upřesnit pracovní dobu → doplnit `openingHours` do schema
 
 ## Další plánované kroky
 
