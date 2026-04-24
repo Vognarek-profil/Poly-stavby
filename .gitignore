@@ -15,3 +15,8 @@ Základní info.txt
 
 # Originální zdrojové fotky (web servíruje jen fotky-web/ WebP)
 Fotky/
+fotky nove/
+
+# Konverzní/utility skripty (neběží v produkci, jen lokálně při zpracování fotek/videa)
+convert_to_webp.py
+optimize_video.ps1
