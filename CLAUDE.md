@@ -86,9 +86,14 @@ Poly stavby/
 | `#galerie` | 12 fotek realizací – fasády, rekonstrukce, interiéry |
 | `#video` | Video z realizace (placeholder – čeká na optimalizované video) |
 | `#kde-pracujeme` | Oblast působnosti – seznam měst + okresy (local SEO) |
-| `#faq` | 11 častých otázek ve 3 kategoriích (zateplení / sádrokarton / průběh a záruky) + pruh 4 fází spolupráce. `<details>`/`<summary>`, bez JS. Zdroj textů: `poly-stavby_faq.md` (gitignore) |
+| `#faq` | 11 častých otázek ve 3 kategoriích (zateplení / sádrokarton / průběh a záruky) + pruh 4 fází spolupráce. `<details>`/`<summary>`, bez JS. Zdroj textů: `poly-stavby_faq.md` (gitignore) – při přepisu převedeno do 1. os. j. č. |
 | `#recenze` | 4 reálné ověřené recenze z NejŘemeslníci.cz (5,0★), odkaz na zdroj |
 | `#kontakt` | Telefon, e-mail, Instagram, Facebook + dlaždice se sídlem a IČO |
+
+## Tón webu
+
+Web mluví za **jednoho člověka: 1. osoba jednotného čísla** („nabízím", „pracuji", „přijedu", „doporučuji"). Petr je OSVČ, ne firma s týmem.
+Množné číslo je na webu správně jen v **citacích recenzí** – tam mluví zákazník. Nové texty (i podklady dodané v MD) proto vždy převeď do jednotného čísla.
 
 ## Design
 
@@ -171,6 +176,7 @@ Pokud nechceš řešit ffmpeg, nahraj video na YouTube (třeba jako Unlisted) a 
 
 ## Changelog
 
+- **2026-08-30** – Sjednocení tónu webu na 1. os. j. č.: FAQ (20 míst) + „Naše realizace" → „Moje realizace" v nadpisu `#pred-po` a v hero tlačítku; `FAQPage` schema přegenerováno, aby doslova sedělo s viditelným textem
 - **2026-08-30** – Sjednocení kanonické domény na `www` (8 URL v HTML + sitemap + robots), `vercel.json` s 301 z `poly-stavby.vercel.app`, nová sekce `#faq` (11 otázek, 4 fáze spolupráce) + `FAQPage` JSON-LD, odkaz FAQ v navigaci, aktualizovaný `lastmod` v sitemapě
 
 - **2026-04-24** – 19 nových WebP fotek, nová hero, sekce `#proces` (5 kroků rekonstrukce podkroví), sekce `#video` (placeholder), galerie 6→12, nav rozšířen o „Rekonstrukce", mobilní breakpoint 700→820 px (commit `0a83d21`)
