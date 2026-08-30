@@ -79,7 +79,7 @@ Poly stavby/
 ├── favicon.svg         # SVG favicon (domeček, tmavý + oranžový)
 ├── robots.txt          # Povoluje vše, odkazuje na sitemap
 ├── sitemap.xml         # Jedna URL: https://www.poly-stavby.cz/
-├── vercel.json         # 301 redirect z poly-stavby.vercel.app na www.poly-stavby.cz
+├── vercel.json         # 308 redirect z poly-stavby.vercel.app na www.poly-stavby.cz
 ├── .gitignore
 ├── fotky-web/          # Optimalizované WebP obrázky (SEO názvy)
 │   ├── uvodni-zatepleni-bytoveho-domu-poly-stavby.webp ← hero bg (nová úvodní)
