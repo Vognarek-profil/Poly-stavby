@@ -1,0 +1,11 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "redirects": [
+    {
+      "source": "/:path*",
+      "has": [{ "type": "host", "value": "poly-stavby.vercel.app" }],
+      "destination": "https://www.poly-stavby.cz/:path*",
+      "permanent": true
+    }
+  ]
+}

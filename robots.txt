@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://poly-stavby.cz/sitemap.xml
+Sitemap: https://www.poly-stavby.cz/sitemap.xml
