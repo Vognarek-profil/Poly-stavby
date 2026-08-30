@@ -58,10 +58,21 @@ V HTML nezůstal žádný odkaz na apex bez www. Oba JSON-LD bloky validní.
 
 **Co ještě zbývá (nutná ruční akce, z repa ani přes CLI to nejde):**
 
-Priorita 1 – tohle rozhodne, jestli se web zaindexuje:
-1. V GSC „Kontrola adresy URL" → `https://www.poly-stavby.cz/` → **Požádat o indexování**
-   (jde jen ~1× za pár dní, opakováním se to neurychlí; reálně pár dní až 2 týdny).
-2. V GSC znovu odeslat sitemapu `sitemap.xml` (stará chyba byla kvůli apex URL v ní).
+Priorita 1 – ✅ **hotovo 30. 8. 2026**:
+1. ✅ V GSC požádáno o indexování `https://www.poly-stavby.cz/`
+2. ✅ V GSC znovu odeslána sitemapa `sitemap.xml`
+
+**→ Teď se čeká na Googlu. Reálně pár dní až 2 týdny.** Opakovaně o indexování nežádat,
+neurychlí to nic (limit je ~1× za pár dní na URL).
+
+**Kontrola za ~2 týdny (tj. kolem 13. 9. 2026)** – GSC → Kontrola adresy URL →
+`https://www.poly-stavby.cz/`:
+- „Adresa URL je na Googlu" → hotovo, indexace vyřešená
+- pořád „Alternativní stránka se správnou značkou kanonické stránky" → **to už by znamenalo
+  něco jiného než původní příčina** (ta je opravená a ověřená naostro), řešit znovu od nuly
+- „Zjištěno – momentálně neindexováno" / „Prohledáno – momentálně neindexováno" → Google web
+  vidí, jen mu zatím nepřijde dost důležitý. Tady pomůžou zpětné odkazy a hlavně
+  Google Business Profile, ne další úpravy kódu.
 
 Priorita 2 – úklid, neblokuje indexaci:
 3. Ve Vercelu přehodit apex redirect z **307 na 308**. 307 je *dočasné* přesměrování – Google
@@ -199,13 +210,13 @@ Množné číslo je na webu správně jen v **citacích recenzí** – tam mluv�
 - [x] Sekce "Kde pracujeme" se seznamem měst (local SEO + user intent)
 - [x] Adresa + IČO v kontaktu i patičce
 - [x] Reálné ověřené recenze z NejŘemeslníci.cz + `AggregateRating` + `Review` entity ve schema (5,0★, 4 recenze)
-- [ ] Google Search Console – požádat o indexování + znovu odeslat sitemapu (property www je ověřená)
+- [x] Google Search Console – property www ověřená, 30. 8. 2026 požádáno o indexování + odeslána sitemapa (čeká se na Google)
 - [ ] Vercel – apex redirect 307 → 308 (permanent)
 - [ ] Upřesnit pracovní dobu → doplnit `openingHours` do schema
 
 ## Další plánované kroky
 
-1. **V GSC požádat o indexování + znovu odeslat sitemapu** (viz sekce Indexace) – tohle je to podstatné
+1. **Kolem 13. 9. 2026 zkontrolovat v GSC, jestli se web zaindexoval** (viz sekce Indexace – je tam i co znamená který výsledek)
 2. Vercel: apex redirect 307 → 308 (úklid, indexaci neblokuje). Zvážit i přechod na **Domain property** `poly-stavby.cz` (TXT na Wedosu) – pokryje www i apex najednou
 3. Založit Google Business Profile (pro "blízko mě" a mapy – klíčové pro local SEO)
 4. Upřesnit pracovní dobu Petra a doplnit `openingHours` do JSON-LD schema
@@ -246,6 +257,7 @@ Pokud nechceš řešit ffmpeg, nahraj video na YouTube (třeba jako Unlisted) a 
 
 ## Changelog
 
+- **2026-08-30** – V GSC požádáno o indexování www adresy a znovu odeslána sitemapa; čeká se na průchod Googlu (kontrola ~13. 9. 2026)
 - **2026-08-30** – `vercel.json`: přidáno pravidlo pro `/`, kořen `poly-stavby.vercel.app` se nepřesměrovával (commit `364e590`)
 - **2026-08-30** – Sjednocení tónu webu na 1. os. j. č.: FAQ (20 míst) + „Naše realizace" → „Moje realizace" v nadpisu `#pred-po` a v hero tlačítku; `FAQPage` schema přegenerováno, aby doslova sedělo s viditelným textem
 - **2026-08-30** – Sjednocení kanonické domény na `www` (8 URL v HTML + sitemap + robots), `vercel.json` s 308 z `poly-stavby.vercel.app`, nová sekce `#faq` (11 otázek, 4 fáze spolupráce) + `FAQPage` JSON-LD, odkaz FAQ v navigaci, aktualizovaný `lastmod` v sitemapě
