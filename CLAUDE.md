@@ -19,7 +19,7 @@ Web živnostníka **Petra Poláčka (Poly stavby)** – zateplení fasád, fasá
 ## Stav projektu
 
 - **Web:** https://www.poly-stavby.cz ✅ live (kanonická adresa je **s www**)
-- **Doména:** poly-stavby.cz připojena k Vercel; ve Vercelu je primární `www.poly-stavby.cz`, apex `poly-stavby.cz` se na ni přesměrovává (307)
+- **Doména:** poly-stavby.cz registrovaná a DNS spravované na **Wedosu**, nasměrovaná na Vercel; ve Vercelu je primární `www.poly-stavby.cz`, apex `poly-stavby.cz` se na ni přesměrovává (307)
 - **poly-stavby.vercel.app:** přesměrováno 308 na www přes `vercel.json` (aby nevznikala duplicita v Googlu)
 - **GitHub:** https://github.com/Vognarek-profil/Poly-stavby
 - **Hosting:** Vercel (auto-deploy z main větve)
@@ -56,16 +56,40 @@ https://poly-stavby.vercel.app/   308 → www
 ```
 V HTML nezůstal žádný odkaz na apex bez www. Oba JSON-LD bloky validní.
 
-**Co ještě zbývá (nutná ruční akce, nejde z repa):**
-1. ⚠️ **Ve Vercelu přehodit apex redirect z 307 na 308.** Project → Settings → Domains →
-   `poly-stavby.cz` → Edit → status kód. 307 je *dočasné* přesměrování, Google si při něm
-   nechává původní adresu v indexu – opak toho, co chceme. Z `vercel.json` to přepsat nejde,
-   běží to na úrovni platformy nad routováním.
-2. V GSC „Kontrola adresy URL" → `https://www.poly-stavby.cz/` → **Požádat o indexování**
+**Co ještě zbývá (nutná ruční akce, z repa ani přes CLI to nejde):**
+
+Priorita 1 – tohle rozhodne, jestli se web zaindexuje:
+1. V GSC „Kontrola adresy URL" → `https://www.poly-stavby.cz/` → **Požádat o indexování**
    (jde jen ~1× za pár dní, opakováním se to neurychlí; reálně pár dní až 2 týdny).
-3. V GSC znovu odeslat sitemapu `sitemap.xml` (stará chyba byla kvůli apex URL v ní).
+2. V GSC znovu odeslat sitemapu `sitemap.xml` (stará chyba byla kvůli apex URL v ní).
+
+Priorita 2 – úklid, neblokuje indexaci:
+3. Ve Vercelu přehodit apex redirect z **307 na 308**. 307 je *dočasné* přesměrování – Google
+   si při něm apex adresu dál drží a periodicky ověřuje, místo aby ji zahodil. Samotnou
+   indexaci to **neblokuje**, o tom rozhodl canonical (už opravený).
 4. Založit **Google Business Profile** – pro dotazy „zateplení fasády Brno" a mapy je pro
    živnostníka důležitější než samotný web.
+
+**Kde se co nastavuje (snadno se to plete):**
+
+| Úkon | Kde | Cesta |
+|------|-----|-------|
+| Redirect apex → www a jeho status kód | **Vercel** | Project → Settings → Domains → `poly-stavby.cz` → Edit → Redirect Status Code |
+| TXT záznam pro GSC Domain property | **Wedos** | Doména → DNS záznamy → přidat TXT pro `poly-stavby.cz` |
+| Redirect z `poly-stavby.vercel.app` | **repo** | `vercel.json` |
+
+Wedos jen směruje doménu na Vercel; co Vercel s požadavkem udělá, řídí Vercel.
+
+**Stav DNS (ověřeno 30. 8. 2026, NS jsou na Wedosu):**
+```
+NS    poly-stavby.cz     → ns.wedos.cz / .net / .eu / .com
+A     poly-stavby.cz     → 216.198.79.1                        (Vercel)
+CNAME www.poly-stavby.cz → ba68f9c08ae2357c.vercel-dns-017.com (Vercel)
+TXT   poly-stavby.cz     → žádné (pro Domain property je kam psát, nic se nepřepíše)
+```
+
+**Pozn.:** změnu status kódu redirectu **nejde udělat z Claude Code** – Vercel CLI ji neumí,
+šla by jen přes REST API s API tokenem. Je to klik v dashboardu.
 
 **Pozor na příště:** neověřuj indexaci přes obyčejné webové vyhledávání – vrací i výsledky
 z jiných vyhledávačů a může tvrdit, že web v Googlu je, i když v GSC indexovaný není.
@@ -181,8 +205,8 @@ Množné číslo je na webu správně jen v **citacích recenzí** – tam mluv�
 
 ## Další plánované kroky
 
-1. **Vercel: apex redirect 307 → 308** (viz sekce Indexace) a v GSC požádat o indexování + znovu odeslat sitemapu
-2. Zvážit přechod na **Domain property** `poly-stavby.cz` (ověření DNS TXT) – pokryje www i apex najednou, dnešní problém by se pak už nemohl opakovat
+1. **V GSC požádat o indexování + znovu odeslat sitemapu** (viz sekce Indexace) – tohle je to podstatné
+2. Vercel: apex redirect 307 → 308 (úklid, indexaci neblokuje). Zvážit i přechod na **Domain property** `poly-stavby.cz` (TXT na Wedosu) – pokryje www i apex najednou
 3. Založit Google Business Profile (pro "blízko mě" a mapy – klíčové pro local SEO)
 4. Upřesnit pracovní dobu Petra a doplnit `openingHours` do JSON-LD schema
 5. Průběžně doplňovat nové ověřené recenze z NejŘemeslníci
