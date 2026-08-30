@@ -20,11 +20,56 @@ Web živnostníka **Petra Poláčka (Poly stavby)** – zateplení fasád, fasá
 
 - **Web:** https://www.poly-stavby.cz ✅ live (kanonická adresa je **s www**)
 - **Doména:** poly-stavby.cz připojena k Vercel; ve Vercelu je primární `www.poly-stavby.cz`, apex `poly-stavby.cz` se na ni přesměrovává (307)
-- **poly-stavby.vercel.app:** přesměrováno 301 na www přes `vercel.json` (aby nevznikala duplicita v Googlu)
+- **poly-stavby.vercel.app:** přesměrováno 308 na www přes `vercel.json` (aby nevznikala duplicita v Googlu)
 - **GitHub:** https://github.com/Vognarek-profil/Poly-stavby
 - **Hosting:** Vercel (auto-deploy z main větve)
 - **Poslední aktualizace:** 2026-08-30 – sjednocení domény na www, sekce FAQ + FAQPage schema
-- **Google Search Console:** ověřovací meta tag je v `<head>`. **Property musí být pro `www.poly-stavby.cz`** (nebo Domain property `poly-stavby.cz`, která pokryje obě varianty). Property jen pro apex bez www ukazuje samá přesměrování a nula indexovaných stránek.
+- **Google Search Console:** property je **Předpona URL `https://www.poly-stavby.cz/`** (ověřeno meta tagem v `<head>`). Stav k 30. 8. 2026: **web zatím není zaindexovaný**, čeká se na nový průchod Googlu po opravě canonicalu – viz sekce „Indexace" níže.
+
+## Indexace v Googlu – co se řešilo 30. 8. 2026
+
+**Problém:** web se neindexoval. V Search Console u `https://www.poly-stavby.cz/` hlásilo
+„Adresa URL na Googlu není → **Alternativní stránka se správnou značkou kanonické stránky**".
+
+**Příčina:** rozpojená kanonická adresa. Ve Vercelu je primární `www.poly-stavby.cz`, ale
+v kódu bylo všude `poly-stavby.cz` bez www – canonical, `og:url`, `og:image`, `twitter:image`,
+JSON-LD (`@id`, `url`, `image`, `logo`), `<loc>` v sitemapě i odkaz na sitemapu v robots.txt.
+Google tedy na www stránce četl canonical mířící na adresu, která se 307 přesměrovávala zpátky
+na www → www vyhodnotil jako pouhou alternativu a nezaindexoval ji.
+
+Vedlejší efekt: sitemapa odeslaná ve www property obsahovala apex URL (mimo rozsah property),
+což v GSC házelo „Soubory Sitemap: Dočasná chyba zpracování".
+
+**Co se opravilo (commity `7dc0081`, `364e590`):**
+- všech 8 URL v `index.html` + `sitemap.xml` + `robots.txt` přepsáno na `https://www.poly-stavby.cz/`
+- `lastmod` v sitemapě na 2026-08-30
+- `vercel.json`: 308 redirect z `poly-stavby.vercel.app` na www (duplicitní obsah)
+  - ⚠️ `source: "/:path*"` ve Vercelu **nematchuje kořenovou cestu** – `/` vracelo 200, zatímco
+    podstránky se přesměrovávaly. Nutné mít **samostatné pravidlo pro `/`**. Ověřeno naostro.
+- odstraněn mrtvý placeholder komentář pro GSC verifikaci (ostrý meta tag zůstal)
+
+**Ověřeno naostro po deployi:**
+```
+https://www.poly-stavby.cz/       200   ← jediná kanonická adresa
+https://poly-stavby.cz/           307 → www
+https://poly-stavby.vercel.app/   308 → www
+```
+V HTML nezůstal žádný odkaz na apex bez www. Oba JSON-LD bloky validní.
+
+**Co ještě zbývá (nutná ruční akce, nejde z repa):**
+1. ⚠️ **Ve Vercelu přehodit apex redirect z 307 na 308.** Project → Settings → Domains →
+   `poly-stavby.cz` → Edit → status kód. 307 je *dočasné* přesměrování, Google si při něm
+   nechává původní adresu v indexu – opak toho, co chceme. Z `vercel.json` to přepsat nejde,
+   běží to na úrovni platformy nad routováním.
+2. V GSC „Kontrola adresy URL" → `https://www.poly-stavby.cz/` → **Požádat o indexování**
+   (jde jen ~1× za pár dní, opakováním se to neurychlí; reálně pár dní až 2 týdny).
+3. V GSC znovu odeslat sitemapu `sitemap.xml` (stará chyba byla kvůli apex URL v ní).
+4. Založit **Google Business Profile** – pro dotazy „zateplení fasády Brno" a mapy je pro
+   živnostníka důležitější než samotný web.
+
+**Pozor na příště:** neověřuj indexaci přes obyčejné webové vyhledávání – vrací i výsledky
+z jiných vyhledávačů a může tvrdit, že web v Googlu je, i když v GSC indexovaný není.
+Autorita je výhradně Search Console.
 
 ## Struktura souborů
 
@@ -130,13 +175,14 @@ Množné číslo je na webu správně jen v **citacích recenzí** – tam mluv�
 - [x] Sekce "Kde pracujeme" se seznamem měst (local SEO + user intent)
 - [x] Adresa + IČO v kontaktu i patičce
 - [x] Reálné ověřené recenze z NejŘemeslníci.cz + `AggregateRating` + `Review` entity ve schema (5,0★, 4 recenze)
-- [ ] Google Search Console – ověřit property pro www, odeslat sitemapu, „Prověřit URL" → Požádat o indexování
+- [ ] Google Search Console – požádat o indexování + znovu odeslat sitemapu (property www je ověřená)
+- [ ] Vercel – apex redirect 307 → 308 (permanent)
 - [ ] Upřesnit pracovní dobu → doplnit `openingHours` do schema
 
 ## Další plánované kroky
 
-1. V Search Console mít property pro **www.poly-stavby.cz** (ideálně Domain property `poly-stavby.cz` přes DNS TXT – pokryje www i apex)
-2. Odeslat `https://www.poly-stavby.cz/sitemap.xml` a přes „Prověřit URL" požádat o indexování
+1. **Vercel: apex redirect 307 → 308** (viz sekce Indexace) a v GSC požádat o indexování + znovu odeslat sitemapu
+2. Zvážit přechod na **Domain property** `poly-stavby.cz` (ověření DNS TXT) – pokryje www i apex najednou, dnešní problém by se pak už nemohl opakovat
 3. Založit Google Business Profile (pro "blízko mě" a mapy – klíčové pro local SEO)
 4. Upřesnit pracovní dobu Petra a doplnit `openingHours` do JSON-LD schema
 5. Průběžně doplňovat nové ověřené recenze z NejŘemeslníci
@@ -176,9 +222,9 @@ Pokud nechceš řešit ffmpeg, nahraj video na YouTube (třeba jako Unlisted) a 
 
 ## Changelog
 
+- **2026-08-30** – `vercel.json`: přidáno pravidlo pro `/`, kořen `poly-stavby.vercel.app` se nepřesměrovával (commit `364e590`)
 - **2026-08-30** – Sjednocení tónu webu na 1. os. j. č.: FAQ (20 míst) + „Naše realizace" → „Moje realizace" v nadpisu `#pred-po` a v hero tlačítku; `FAQPage` schema přegenerováno, aby doslova sedělo s viditelným textem
-- **2026-08-30** – Sjednocení kanonické domény na `www` (8 URL v HTML + sitemap + robots), `vercel.json` s 301 z `poly-stavby.vercel.app`, nová sekce `#faq` (11 otázek, 4 fáze spolupráce) + `FAQPage` JSON-LD, odkaz FAQ v navigaci, aktualizovaný `lastmod` v sitemapě
-
+- **2026-08-30** – Sjednocení kanonické domény na `www` (8 URL v HTML + sitemap + robots), `vercel.json` s 308 z `poly-stavby.vercel.app`, nová sekce `#faq` (11 otázek, 4 fáze spolupráce) + `FAQPage` JSON-LD, odkaz FAQ v navigaci, aktualizovaný `lastmod` v sitemapě
 - **2026-04-24** – 19 nových WebP fotek, nová hero, sekce `#proces` (5 kroků rekonstrukce podkroví), sekce `#video` (placeholder), galerie 6→12, nav rozšířen o „Rekonstrukce", mobilní breakpoint 700→820 px (commit `0a83d21`)
 - **2026-04-15** – Google Search Console verification meta tag (commit `26d606c`)
 - **2026-04-15** – Local business schema, sekce „Kde pracuji", ověřené recenze z NejŘemeslníci (commit `810174e`)
